@@ -1,5 +1,4 @@
-﻿// DAL/DbHelper.cs
-using System;
+﻿using System;
 using System.Data.SqlClient;
 
 namespace Library.DAL

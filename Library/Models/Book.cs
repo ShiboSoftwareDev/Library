@@ -6,5 +6,5 @@ public class Book
     public string Title { get; set; } = "";
     public int PublicationYear { get; set; }
     public int AuthorID { get; set; }
-    public Author? Author { get; set; }   // populated when joined
+    public Author? Author { get; set; }  
 }

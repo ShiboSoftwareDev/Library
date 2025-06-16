@@ -1,5 +1,4 @@
-﻿// Forms/AddAuthorForm.cs  – replace all old code
-using Library.DAL;
+﻿using Library.DAL;
 using Library.Models;
 using System.Drawing;
 
@@ -20,7 +19,6 @@ public partial class AddAuthorForm : Form
         FormBorderStyle = FormBorderStyle.FixedDialog;
         MaximizeBox = MinimizeBox = false;
 
-        // Controls
         var txtFirst = CreateTextBox("First name …");
         var txtLast = CreateTextBox("Last name …");
         var numAge = new NumericUpDown
@@ -44,7 +42,6 @@ public partial class AddAuthorForm : Form
 
         btnSave.FlatAppearance.BorderSize = 0;
 
-        // layout table
         var tbl = new TableLayoutPanel
         {
             ColumnCount = 2,
@@ -79,7 +76,6 @@ public partial class AddAuthorForm : Form
 
         Controls.Add(tbl);
 
-        // events
         btnSave.Click += (_, _) =>
         {
             if (txtFirst.Text.Trim() == "" || txtLast.Text.Trim() == "")

@@ -1,5 +1,4 @@
-﻿// Forms/AddBookForm.cs  – replace all old code
-using Library.DAL;
+﻿using Library.DAL;
 using Library.Data;
 using Library.Models;
 using System.Drawing;

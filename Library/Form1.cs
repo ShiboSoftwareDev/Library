@@ -1,5 +1,4 @@
-﻿// MainForm.cs   —  paste over the entire existing file
-using Library.Data;
+﻿using Library.Data;
 using Library.Models;
 using System.Drawing;
 
@@ -7,19 +6,16 @@ namespace Library
 {
     public partial class MainForm : Form
     {
-        // ---------- palette & fonts ----------
         private readonly Color ColorPrimary = ColorTranslator.FromHtml("#23395d");
         private readonly Color ColorCard = ColorTranslator.FromHtml("#f4f7fb");
         private readonly Font FontHeader = new("Segoe UI", 13f, FontStyle.Bold);
         private readonly Font FontNormal = new("Segoe UI", 9f);
 
-        // ---------- UI controls ----------
         private readonly Label lblTitle = new();
         private readonly DataGridView dgvAuthors = new();
         private readonly DataGridView dgvBooks = new();
         private readonly Button btnAddAuthor = new();
         private readonly Button btnAddBook = new();
-        private readonly Button btnRefresh = new();
 
         public MainForm()
         {
@@ -29,7 +25,6 @@ namespace Library
             MinimumSize = new Size(800, 500);
             BackColor = ColorCard;
 
-            // ---- header strip ----
             lblTitle.Text = "📚  Library dashboard";
             lblTitle.Dock = DockStyle.Top;
             lblTitle.Height = 50;
@@ -39,10 +34,8 @@ namespace Library
             lblTitle.Font = FontHeader;
             lblTitle.Padding = new Padding(20, 0, 0, 0);
 
-            // ---- buttons strip ----
             ConfigureButton(btnAddAuthor, "➕  New Author");
             ConfigureButton(btnAddBook, "➕  New Book");
-            ConfigureButton(btnRefresh, "🔄  Refresh");
 
             var buttonBar = new FlowLayoutPanel
             {
@@ -52,9 +45,8 @@ namespace Library
                 Padding = new Padding(15, 5, 0, 5),
                 BackColor = ColorCard
             };
-            buttonBar.Controls.AddRange([btnAddAuthor, btnAddBook, btnRefresh]);
+            buttonBar.Controls.AddRange([btnAddAuthor, btnAddBook]);
 
-            // ---- grids inside a single layout panel ----
             ConfigureGrid(dgvAuthors, "Authors");
             ConfigureGrid(dgvBooks, "Books");
 
@@ -65,22 +57,29 @@ namespace Library
                 RowCount = 2,
                 ColumnCount = 1,
             };
-            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 35)); // top grid 35 %
-            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 65)); // bottom grid 65 %
+            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 35)); 
+            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 65)); 
             layout.Controls.Add(dgvAuthors, 0, 0);
             layout.Controls.Add(dgvBooks, 0, 1);
 
-            // ---- assemble form ----
             Controls.AddRange([layout, buttonBar, lblTitle]);
 
-            // ---- events ----
-            btnAddAuthor.Click += (_, _) => new Forms.AddAuthorForm().ShowDialog(this);
-            btnAddBook.Click += (_, _) => new Forms.AddBookForm().ShowDialog(this);
-            btnRefresh.Click += (_, _) => LoadData();
+            btnAddAuthor.Click += (_, _) =>
+            {
+                using var f = new Forms.AddAuthorForm();
+                if (f.ShowDialog(this) == DialogResult.OK)  
+                    LoadData();                             
+            };
+
+            btnAddBook.Click += (_, _) =>
+            {
+                using var f = new Forms.AddBookForm();
+                if (f.ShowDialog(this) == DialogResult.OK)
+                    LoadData();
+            };  
             Load += (_, _) => LoadData();
         }
 
-        // ---------- helpers ----------
         private void ConfigureButton(Button btn, string text)
         {
             btn.Text = text;
@@ -119,7 +118,7 @@ namespace Library
             {
                 BackColor = ColorTranslator.FromHtml("#eaf0f8")
             };
-            dgv.Tag = tag;            // used in LoadData()
+            dgv.Tag = tag;          
         }
 
         private void LoadData()
@@ -135,7 +134,6 @@ namespace Library
                 Author = b.Author?.ToString()
             }).ToList();
 
-            // nice column captions
             if (dgvAuthors.Columns.Count > 0)
             {
                 dgvAuthors.Columns[nameof(Author.AuthorID)].Visible = false;
