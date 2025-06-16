@@ -4,15 +4,10 @@ using System.Data.SqlClient;
 
 namespace Library.DAL
 {
-    /// <summary>
-    /// Base helper that owns the raw connection string and disposes its connection.
-    /// Every DAL class can inherit from this so the string stays in ONE place.
-    /// </summary>
     public class DbHelper : IDisposable
     {
-        // *****  استبدل هذه السلسلة ببياناتك المعتادة للاتصال  *****
         protected readonly string connectionString =
-            "Server=YOUR_SERVER_NAME;Database=MyLibraryDB;Trusted_Connection=True;";
+            "Server=Shibo;Database=MyLibraryDB;Trusted_Connection=True;";
 
         private SqlConnection? _connection;
 

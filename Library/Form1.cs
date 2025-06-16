@@ -14,7 +14,6 @@ namespace Library
 
         public MainForm()
         {
-            InitializeComponent();          // if you’re keeping the Designer file
             Text = "Library";
             Width = 800; Height = 600;
 
