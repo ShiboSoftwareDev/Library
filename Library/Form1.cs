@@ -11,114 +11,23 @@ namespace Library
         private readonly Font FontHeader = new("Segoe UI", 13f, FontStyle.Bold);
         private readonly Font FontNormal = new("Segoe UI", 9f);
 
-        private readonly Label lblTitle = new();
-        private readonly DataGridView dgvAuthors = new();
-        private readonly DataGridView dgvBooks = new();
-        private readonly Button btnAddAuthor = new();
-        private readonly Button btnAddBook = new();
-
         public MainForm()
         {
-            Text = "Library";
-            Width = 900;
-            Height = 600;
-            MinimumSize = new Size(800, 500);
-            BackColor = ColorCard;
-
-            lblTitle.Text = "📚  Library dashboard";
-            lblTitle.Dock = DockStyle.Top;
-            lblTitle.Height = 50;
-            lblTitle.TextAlign = ContentAlignment.MiddleLeft;
-            lblTitle.BackColor = ColorPrimary;
-            lblTitle.ForeColor = Color.White;
-            lblTitle.Font = FontHeader;
-            lblTitle.Padding = new Padding(20, 0, 0, 0);
-
-            ConfigureButton(btnAddAuthor, "➕  New Author");
-            ConfigureButton(btnAddBook, "➕  New Book");
-
-            var buttonBar = new FlowLayoutPanel
-            {
-                Dock = DockStyle.Top,
-                Height = 45,
-                FlowDirection = FlowDirection.LeftToRight,
-                Padding = new Padding(15, 5, 0, 5),
-                BackColor = ColorCard
-            };
-            buttonBar.Controls.AddRange([btnAddAuthor, btnAddBook]);
-
-            ConfigureGrid(dgvAuthors, "Authors");
-            ConfigureGrid(dgvBooks, "Books");
-
-            var layout = new TableLayoutPanel
-            {
-                Dock = DockStyle.Fill,
-                BackColor = ColorCard,
-                RowCount = 2,
-                ColumnCount = 1,
-            };
-            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 35)); 
-            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 65)); 
-            layout.Controls.Add(dgvAuthors, 0, 0);
-            layout.Controls.Add(dgvBooks, 0, 1);
-
-            Controls.AddRange([layout, buttonBar, lblTitle]);
+            InitializeComponent();              
 
             btnAddAuthor.Click += (_, _) =>
             {
                 using var f = new Forms.AddAuthorForm();
-                if (f.ShowDialog(this) == DialogResult.OK)  
-                    LoadData();                             
+                if (f.ShowDialog(this) == DialogResult.OK)
+                    LoadData();
             };
-
             btnAddBook.Click += (_, _) =>
             {
                 using var f = new Forms.AddBookForm();
                 if (f.ShowDialog(this) == DialogResult.OK)
                     LoadData();
-            };  
+            };
             Load += (_, _) => LoadData();
-        }
-
-        private void ConfigureButton(Button btn, string text)
-        {
-            btn.Text = text;
-            btn.AutoSize = true;
-            btn.Font = FontNormal;
-            btn.BackColor = ColorPrimary;
-            btn.ForeColor = Color.White;
-            btn.FlatStyle = FlatStyle.Flat;
-            btn.FlatAppearance.BorderSize = 0;
-            btn.Padding = new Padding(10, 5, 10, 5);
-            btn.Margin = new Padding(0, 0, 12, 0);
-            btn.Cursor = Cursors.Hand;
-        }
-
-        private void ConfigureGrid(DataGridView dgv, string tag)
-        {
-            dgv.Dock = DockStyle.Fill;
-            dgv.BackgroundColor = Color.White;
-            dgv.BorderStyle = BorderStyle.None;
-            dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dgv.AllowUserToAddRows = false;
-            dgv.AllowUserToDeleteRows = false;
-            dgv.MultiSelect = false;
-            dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgv.ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
-            {
-                BackColor = ColorPrimary,
-                ForeColor = Color.White,
-                Font = new Font("Segoe UI", 9f, FontStyle.Bold),
-                Alignment = DataGridViewContentAlignment.MiddleLeft
-            };
-            dgv.EnableHeadersVisualStyles = false;
-            dgv.GridColor = Color.WhiteSmoke;
-            dgv.RowTemplate.Height = 28;
-            dgv.AlternatingRowsDefaultCellStyle = new DataGridViewCellStyle
-            {
-                BackColor = ColorTranslator.FromHtml("#eaf0f8")
-            };
-            dgv.Tag = tag;          
         }
 
         private void LoadData()
